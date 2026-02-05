@@ -1,88 +1,38 @@
-import { ApiKeyCheck } from "@/components/ApiKeyCheck";
-import { SpecAlignCard, type DiffLine } from "@/components/SpecAlignCard";
-import { GenerativePanel } from "@/components/generative";
-import Image from "next/image";
+import { GenerativePanel } from "@/components/generative/GenerativePanel";
 
 export default function Home() {
-  const before: DiffLine[] = [
-    { kind: "context", text: "export function canApplyFix(user: User) {" },
-    { kind: "context", text: "  // Only admins can apply automated fixes." },
-    { kind: "remove", text: "  return user.role === \"admin\";" },
-    { kind: "context", text: "}" },
-  ];
-
-  const after: DiffLine[] = [
-    { kind: "context", text: "export function canApplyFix(user: User) {" },
-    { kind: "context", text: "  // Only admins can apply automated fixes." },
-    {
-      kind: "add",
-      text: "  return user.role === \"admin\" || user.permissions.includes(\"specalign:apply\");",
-    },
-    { kind: "context", text: "}" },
-  ];
-
   return (
-    <div className="min-h-screen bg-background p-8 font-[family-name:var(--font-geist-sans)]">
-      <main className="mx-auto w-full max-w-5xl space-y-8">
-        <header className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <a href="https://tambo.co" target="_blank" rel="noopener noreferrer">
-              <Image
-                src="/Octo-Icon.svg"
-                alt="Tambo AI"
-                width={44}
-                height={44}
-                priority
-              />
-            </a>
-            <div>
-              <h1 className="text-3xl font-semibold text-foreground">
-                SpecAlign
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Generative UI logic auditor (Tambo analytics template base)
-              </p>
-            </div>
-          </div>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-[#0B0C10] p-24 text-white">
+      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-800 bg-gradient-to-b from-zinc-800/30 pb-6 pt-8 backdrop-blur-2xl lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-800/30 lg:p-4">
+          SpecAlign &nbsp;
+          <code className="font-mono font-bold">Hackathon Demo</code>
+        </p>
+      </div>
 
-          <a
-            href="https://tambo.co/docs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md border border-border bg-card px-4 py-2 text-sm text-card-foreground hover:bg-accent"
-          >
-            Tambo docs
-          </a>
-        </header>
+      <div className="relative flex place-items-center my-10">
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl text-cyan-400">
+          SpecAlign Logic Auditor
+        </h1>
+      </div>
 
-        <section className="rounded-lg border border-border bg-card p-6">
-          <h2 className="text-xl font-semibold text-card-foreground">
-            Dashboard
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Dark-mode first (black/cyan) starter UI.
-          </p>
-
-          <div className="mt-6 space-y-6">
-            <SpecAlignCard
-              filePath="src/auth/canApplyFix.ts"
-              before={before}
-              after={after}
-            />
-
-            <ApiKeyCheck>
-              <a
-                href="/chat"
-                className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-3 text-base font-medium text-primary-foreground hover:opacity-90"
-              >
-                Open analytics canvas
-              </a>
-            </ApiKeyCheck>
-          </div>
-        </section>
-
-        <GenerativePanel />
-      </main>
-    </div>
+      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-1 lg:text-left">
+        <h2 className="mb-3 text-2xl font-semibold text-center mb-8">
+          Live Generative UI Demo
+        </h2>
+        
+        {/* THIS IS THE FIXED COMPONENT WITH DATA */}
+        <div className="w-full max-w-3xl mx-auto">
+          <GenerativePanel 
+            status="DRIFT_DETECTED"
+            severity="CRITICAL"
+            specRequirement="Payment processing must reject negative values to prevent refund fraud."
+            codeImplementation="function processPayment(amount) { balance -= amount; }"
+            suggestedFix="function processPayment(amount) { if (amount < 0) throw Error; balance -= amount; }"
+            reasoning="The original code allows negative amounts, which would effectively add money to the user's wallet instead of subtracting it."
+          />
+        </div>
+      </div>
+    </main>
   );
 }
