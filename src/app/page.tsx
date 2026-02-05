@@ -1,8 +1,26 @@
 import { ApiKeyCheck } from "@/components/ApiKeyCheck";
+import { SpecAlignCard, type DiffLine } from "@/components/SpecAlignCard";
 import { GenerativePanel } from "@/components/generative";
 import Image from "next/image";
 
 export default function Home() {
+  const before: DiffLine[] = [
+    { kind: "context", text: "export function canApplyFix(user: User) {" },
+    { kind: "context", text: "  // Only admins can apply automated fixes." },
+    { kind: "remove", text: "  return user.role === \"admin\";" },
+    { kind: "context", text: "}" },
+  ];
+
+  const after: DiffLine[] = [
+    { kind: "context", text: "export function canApplyFix(user: User) {" },
+    { kind: "context", text: "  // Only admins can apply automated fixes." },
+    {
+      kind: "add",
+      text: "  return user.role === \"admin\" || user.permissions.includes(\"specalign:apply\");",
+    },
+    { kind: "context", text: "}" },
+  ];
+
   return (
     <div className="min-h-screen bg-background p-8 font-[family-name:var(--font-geist-sans)]">
       <main className="mx-auto w-full max-w-5xl space-y-8">
@@ -45,7 +63,13 @@ export default function Home() {
             Dark-mode first (black/cyan) starter UI.
           </p>
 
-          <div className="mt-6">
+          <div className="mt-6 space-y-6">
+            <SpecAlignCard
+              filePath="src/auth/canApplyFix.ts"
+              before={before}
+              after={after}
+            />
+
             <ApiKeyCheck>
               <a
                 href="/chat"

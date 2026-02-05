@@ -34,8 +34,8 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-family:
     var(--font-geist-sans),
     ui-sans-serif,
@@ -96,25 +96,25 @@ body {
     --foreground: 240 10% 3.9%;
   }
   .dark {
-    --background: 0 0% 0%;
+    --background: 228 18.5% 5.3%;
     --foreground: 0 0% 98%;
     --card: 0 0% 6%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 6%;
     --popover-foreground: 0 0% 98%;
-    --primary: 185 100% 50%;
+    --primary: 175.6 96.2% 69.4%;
     --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 12%;
     --muted-foreground: 0 0% 70%;
-    --accent: 185 100% 20%;
+    --accent: 175.6 96.2% 20%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 18%;
     --input: 0 0% 18%;
-    --ring: 185 100% 50%;
+    --ring: 175.6 96.2% 69.4%;
     --chart-1: oklch(0.72 0.15 60);
     --chart-2: oklch(0.62 0.2 6);
     --chart-3: oklch(0.53 0.2 262);
