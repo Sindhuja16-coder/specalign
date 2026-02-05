@@ -1,18 +1,45 @@
-export function GenerativePanel() {
+import { type TamboComponent } from "@tambo-ai/react";
+import { z } from "zod";
+
+export const specAlignSchema = z.object({
+  status: z.enum(["DRIFT_DETECTED", "ALIGNED"]),
+  severity: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
+  specRequirement: z.string().describe("The original rule from Jira"),
+  codeImplementation: z.string().describe("The code that breaks the rule"),
+  suggestedFix: z.string().describe("The corrected code"),
+  reasoning: z.string().describe("Why this is a violation")
+});
+
+export function SpecAlignCard({ status, severity, specRequirement, codeImplementation, suggestedFix, reasoning }: z.infer<typeof specAlignSchema>) {
+  const borderColor = severity === "CRITICAL" ? "border-red-500" : "border-yellow-400";
   return (
-    <section className="rounded-lg border border-border bg-card p-6">
-      <h2 className="text-xl font-semibold text-card-foreground">
-        Generative UI
-      </h2>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Place SpecAlign generative components and workflows in
-        {" "}
-        <code className="rounded bg-muted px-1 py-0.5">src/components/generative</code>.
-      </p>
-      <p className="mt-4 text-sm text-muted-foreground">
-        This panel is intentionally lightweight for now; it serves as the
-        starting point for your audit / review UI.
-      </p>
-    </section>
+    <div className={`p-6 rounded-xl bg-[#0B0C10] border ${borderColor} text-white shadow-2xl`}>
+      <div className="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
+        <h2 className="text-xl font-light tracking-widest text-cyan-400">SPECALIGN AUDIT</h2>
+        <span className="px-3 py-1 text-xs font-mono bg-gray-900 border border-gray-700 rounded text-gray-400">{severity} RISK</span>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="p-4 rounded bg-green-900/10 border border-green-500/20">
+          <h3 className="text-xs font-bold text-green-400 mb-2">THE SPEC</h3>
+          <p className="text-sm text-gray-300">"{specRequirement}"</p>
+        </div>
+        <div className="p-4 rounded bg-red-900/10 border border-red-500/20">
+          <h3 className="text-xs font-bold text-red-400 mb-2">THE CODE</h3>
+          <code className="text-xs font-mono text-red-200 block bg-black/30 p-2 rounded">{codeImplementation}</code>
+        </div>
+      </div>
+      <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-800">
+         <p className="text-xs text-gray-500 mb-2">GENERATIVE FIX</p>
+         <code className="block text-xs text-cyan-200 mb-4 font-mono">{suggestedFix}</code>
+         <button className="w-full py-3 bg-cyan-900 hover:bg-cyan-800 text-white font-bold rounded transition-all">[ APPLY FIX ]</button>
+      </div>
+    </div>
   );
 }
+
+export const specAlignConfig: TamboComponent = {
+  name: "SpecAlignCard",
+  description: "Visualizes logic drift.",
+  component: SpecAlignCard,
+  propsSchema: specAlignSchema,
+};
