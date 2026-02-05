@@ -10,8 +10,8 @@ export const specAlignSchema = z.object({
   reasoning: z.string().describe("Why this is a violation")
 });
 
-// FIXED: Removed unused 'status' and 'reasoning' to stop the warning
-export function SpecAlignCard({ severity, specRequirement, codeImplementation, suggestedFix }: z.infer<typeof specAlignSchema>) {
+// FIXED: Renamed function to 'GenerativePanel' to match the file name
+export function GenerativePanel({ severity, specRequirement, codeImplementation, suggestedFix }: z.infer<typeof specAlignSchema>) {
   const borderColor = severity === "CRITICAL" ? "border-red-500" : "border-yellow-400";
   
   return (
@@ -23,7 +23,6 @@ export function SpecAlignCard({ severity, specRequirement, codeImplementation, s
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="p-4 rounded bg-green-900/10 border border-green-500/20">
           <h3 className="text-xs font-bold text-green-400 mb-2">THE SPEC</h3>
-          {/* FIXED: Used &quot; code instead of raw quotes */}
           <p className="text-sm text-gray-300">&quot;{specRequirement}&quot;</p>
         </div>
         <div className="p-4 rounded bg-red-900/10 border border-red-500/20">
@@ -41,8 +40,8 @@ export function SpecAlignCard({ severity, specRequirement, codeImplementation, s
 }
 
 export const specAlignConfig: TamboComponent = {
-  name: "SpecAlignCard",
+  name: "GenerativePanel",
   description: "Visualizes logic drift.",
-  component: SpecAlignCard,
+  component: GenerativePanel, // FIXED: Matches the function name above
   propsSchema: specAlignSchema,
 };
