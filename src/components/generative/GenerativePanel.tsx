@@ -10,8 +10,10 @@ export const specAlignSchema = z.object({
   reasoning: z.string().describe("Why this is a violation")
 });
 
-export function SpecAlignCard({ status, severity, specRequirement, codeImplementation, suggestedFix, reasoning }: z.infer<typeof specAlignSchema>) {
+// FIXED: Removed unused 'status' and 'reasoning' to stop the warning
+export function SpecAlignCard({ severity, specRequirement, codeImplementation, suggestedFix }: z.infer<typeof specAlignSchema>) {
   const borderColor = severity === "CRITICAL" ? "border-red-500" : "border-yellow-400";
+  
   return (
     <div className={`p-6 rounded-xl bg-[#0B0C10] border ${borderColor} text-white shadow-2xl`}>
       <div className="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
@@ -21,7 +23,8 @@ export function SpecAlignCard({ status, severity, specRequirement, codeImplement
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="p-4 rounded bg-green-900/10 border border-green-500/20">
           <h3 className="text-xs font-bold text-green-400 mb-2">THE SPEC</h3>
-          <p className="text-sm text-gray-300">"{specRequirement}"</p>
+          {/* FIXED: Used &quot; code instead of raw quotes */}
+          <p className="text-sm text-gray-300">&quot;{specRequirement}&quot;</p>
         </div>
         <div className="p-4 rounded bg-red-900/10 border border-red-500/20">
           <h3 className="text-xs font-bold text-red-400 mb-2">THE CODE</h3>
