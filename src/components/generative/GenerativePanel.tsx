@@ -39,7 +39,7 @@ export function GenerativePanel() {
           <div className="p-4 rounded bg-green-900/10 border border-green-500/20">
             <h3 className="text-xs font-bold text-green-400 mb-2">THE SPEC</h3>
             <p className="text-sm text-green-200 italic">
-              "System must connect to a Production Cloud Database (Postgres) before deployment."
+              System must connect to a Production Cloud Database (Postgres) before deployment.
             </p>
           </div>
 
