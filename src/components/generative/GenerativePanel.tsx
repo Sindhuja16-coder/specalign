@@ -1,5 +1,8 @@
+"use client"; // This line makes the button interactive!
+
 import { type TamboComponent } from "@tambo-ai/react";
 import { z } from "zod";
+import { useState } from "react";
 
 export const specAlignSchema = z.object({
   status: z.enum(["DRIFT_DETECTED", "ALIGNED"]),
@@ -10,8 +13,10 @@ export const specAlignSchema = z.object({
   reasoning: z.string().describe("Why this is a violation")
 });
 
-// FIXED: Renamed function to 'GenerativePanel' to match the file name
 export function GenerativePanel({ severity, specRequirement, codeImplementation, suggestedFix }: z.infer<typeof specAlignSchema>) {
+  // STATE: This remembers if the button was clicked
+  const [applied, setApplied] = useState(false);
+
   const borderColor = severity === "CRITICAL" ? "border-red-500" : "border-yellow-400";
   
   return (
@@ -33,7 +38,19 @@ export function GenerativePanel({ severity, specRequirement, codeImplementation,
       <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-800">
          <p className="text-xs text-gray-500 mb-2">GENERATIVE FIX</p>
          <code className="block text-xs text-cyan-200 mb-4 font-mono">{suggestedFix}</code>
-         <button className="w-full py-3 bg-cyan-900 hover:bg-cyan-800 text-white font-bold rounded transition-all">[ APPLY FIX ]</button>
+         
+         {/* INTERACTIVE BUTTON */}
+         <button 
+           onClick={() => setApplied(true)}
+           disabled={applied}
+           className={`w-full py-3 font-bold rounded transition-all duration-300 ${
+             applied 
+               ? "bg-green-600 text-white cursor-default" 
+               : "bg-cyan-900 hover:bg-cyan-800 text-white"
+           }`}
+         >
+           {applied ? "✅ FIX APPLIED TO REPO" : "[ APPLY FIX ]"}
+         </button>
       </div>
     </div>
   );
@@ -42,6 +59,6 @@ export function GenerativePanel({ severity, specRequirement, codeImplementation,
 export const specAlignConfig: TamboComponent = {
   name: "GenerativePanel",
   description: "Visualizes logic drift.",
-  component: GenerativePanel, // FIXED: Matches the function name above
+  component: GenerativePanel,
   propsSchema: specAlignSchema,
 };
