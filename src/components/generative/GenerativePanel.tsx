@@ -14,7 +14,7 @@ export function GenerativePanel() {
         {/* HEADER */}
         <div className="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
           <h2 className={`text-xl font-bold tracking-wider ${isFixed ? "text-green-400" : "text-cyan-400"}`}>
-            {isFixed ? "✅ LOGIC ALIGNED" : "SPECALIGN AUDIT"}
+            {isFixed ? "LOGIC ALIGNED" : "SPECALIGN AUDIT"}
           </h2>
           <span className={`px-3 py-1 rounded text-xs font-bold ${
             isFixed ? "bg-green-900/50 text-green-300 border border-green-500/30" : "bg-red-900/50 text-red-300 border border-red-500/30"
@@ -23,39 +23,41 @@ export function GenerativePanel() {
           </span>
         </div>
 
-        {/* MAIN GRID - RED (LEFT) & GREEN (RIGHT) */}
+        {/* MAIN GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           
-          {/* LEFT SIDE: RED BOX (The Violation) */}
+          {/* LEFT SIDE: RED BOX */}
           <div className="p-4 rounded bg-red-900/10 border border-red-500/20">
             <h3 className="text-xs font-bold text-red-400 mb-2">THE CODE (VIOLATION)</h3>
-            <code className="text-xs font-mono text-red-200 block bg-black/30 p-2 rounded border border-red-500/10">
-              const db = new LocalSQLiteConnection(); <br/>
-              // VIOLATION: Local DB detected
-            </code>
+            <div className="text-xs font-mono text-red-200 block bg-black/30 p-2 rounded border border-red-500/10">
+              const db = new LocalSQLiteConnection();
+              <br/>
+              <span className="opacity-75">{"// VIOLATION: Local DB detected"}</span>
+            </div>
           </div>
 
-          {/* RIGHT SIDE: GREEN BOX (The Spec) */}
+          {/* RIGHT SIDE: GREEN BOX */}
           <div className="p-4 rounded bg-green-900/10 border border-green-500/20">
             <h3 className="text-xs font-bold text-green-400 mb-2">THE SPEC</h3>
             <p className="text-sm text-green-200 italic">
-              System must connect to a Production Cloud Database (Postgres) before deployment.
+              System must connect to a Production Cloud Database before deployment.
             </p>
           </div>
 
         </div>
 
-        {/* BOTTOM: BLUE BOX (The Generative Fix) */}
+        {/* BOTTOM: BLUE BOX */}
         <div className={`p-4 rounded-lg border transition-all duration-300 ${
           isFixed ? "bg-green-900/20 border-green-500/50" : "bg-gray-900/50 border-gray-800"
         }`}>
           <p className="text-xs text-gray-500 mb-2 uppercase tracking-widest">GENERATIVE FIX</p>
           
-          <code className={`block text-xs mb-4 font-mono transition-colors duration-300 ${
+          <div className={`block text-xs mb-4 font-mono transition-colors duration-300 ${
             isFixed ? "text-green-300" : "text-cyan-200"
           }`}>
-             const db = new PostgresConnection(process.env.DATABASE_URL); // ✅ FIXED: Cloud DB Connected
-          </code>
+             const db = new PostgresConnection(process.env.DATABASE_URL);
+             <span className="opacity-75"> {"// FIXED: Cloud DB Connected"}</span>
+          </div>
 
           <button
             onClick={() => setIsFixed(true)}
@@ -67,9 +69,7 @@ export function GenerativePanel() {
             }`}
           >
             {isFixed ? (
-              <>
-                <span>✅ FIX APPLIED SUCCESSFULLY</span>
-              </>
+              <span>FIX APPLIED SUCCESSFULLY</span>
             ) : (
               "[ APPLY FIX ]"
             )}
